@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en-AU">
+  <head>
+    <meta charset="utf-8" />
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <title>ZZZ Fish Finder</title>
+    <!-- TODO: stylesheet -->
+    <!-- {{substitute}} palette "variables" -->
+    <script type="text/javascript">
+      function sliderDisplay() {  // show star slider number
+        const slider  = document.querySelector("#stars");
+        const display = document.querySelector("#count");
+        display.textContent = slider.value
+        slider.addEventListener("input", (event) => {
+          display.textContent = event.target.value;
+        });
+      }
+    </script>
+  </head>
+  <body onload="sliderDisplay()">
+    <a href="/">&lt; Back To Hub</a>
+    <table>
+    <!-- TODO: return to spot picker -->
+    <!-- TODO: Time & Spot display -->
+    <!-- time of day icon? -->
+    <!-- fishing spot .svg w/ {{x & y}} -->
+    <!-- last 5 catches -->
+    {{catch-history}}
+    </table>
+    <form action="" method="post">
+      <!-- populate fish list from sql lookup -->
+      <select id="fish" name="fish">
+        {{fish-picker}}
+      </select>
+      <input id="stars" name="stars" type="range" min="1" max="3" />
+      <output id="count"></output>
+      <label for="stars">Stars</label>
+      <input id="shiny" name="shiny" type="checkbox" />
+      <label for="shiny">Shiny</label>
+      <input type="submit" value="Add" />
+    </form>
+  </body>
+</html>

@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en-AU">
+  <head>
+    <meta charset="utf-8" />
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <title>ZZZ Fish Finder</title>
+    <!-- TODO: javascript to link Time & Spot to form.action -->
+    <!-- GET /{spot}/{time} -->
+  </head>
+  <body>
+    <!-- TODO: .svg Map of Fishing Spots w/ click script -->
+    <!-- TODO: Time of Day Picker (change .svg css class?) -->
+    <form id="spot-picker" action="" method="post">
+      <label for="time">Time of Day:</label>
+      <select id="time" name="time">
+        <option value="1">Morning</option>
+        <option value="2">Afternoon</option>
+        <option value="3">Evening</option>
+        <option value="4">Late Night</option>
+      </select>
+      <label for="spot">Fishing Spot:</label>
+      <select id="spot" name="spot">
+        <option value="1">Coastal</option>
+        <option value="2">Bridge</option>
+        <option value="3">Deepwater</option>
+        <option value="4">Reef</option>
+      </select>
+      <input type="submit" value="Fish!" />
+    </form>
+  </body>
+</html>
