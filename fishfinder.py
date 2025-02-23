@@ -80,16 +80,28 @@ class Server:
             self.db.executescript(base_sql.read())
         with open("zzz.fish.junk.sql") as junk_sql:
             self.db.executescript(junk_sql.read())
-        # NOTE: the site would run better if we just append to a .csv
-        # -- and load that .csv into the database here
-        # -- don't know if that's a worthwhile optimisation yet though
+        # get catches, if any are saved
         if os.path.exists("catch.history.sql"):
             with open("catch.history.sql") as catches_sql:
                 self.db.executescript(catches_sql.read())
 
-    def fish_at(self, spot: int, time: int):
+    # database queries
+    def catches_at(self, spot: str, time: str, limit: int = 5) -> List[List[str]]:
         # NOTE: rowids start at 1, not 0
-        spot_rowid = self.spots.index(spot) + 1
+        spot_rowid = self.spots.index(spot) + 1  # nasty, but w/e
+        time_rowid = self.times.index(time) + 1
+        query = f"""
+            SELECT F.name, C.stars, C.shiny
+            FROM Catch as C
+            INNER JOIN Fish AS F ON C.fish == F.rowid
+            WHERE C.spot == {spot_rowid}
+            AND   C.time == {time_rowid}
+            ORDER BY C.rowid DESC LIMIT {limit};"""
+        return self.db.execute(query).fetchall()
+
+    def fish_at(self, spot: str, time: str) -> List[Tuple[str, str]]:
+        # NOTE: rowids start at 1, not 0
+        spot_rowid = self.spots.index(spot) + 1  # nasty, but w/e
         time_rowid = self.times.index(time) + 1
         query = f"""
             SELECT F.rowid, F.name
@@ -100,6 +112,27 @@ class Server:
             AND   FT.time == {time_rowid};"""
         return self.db.execute(query).fetchall()
 
+    def rates_at(self, spot: str, time: str) -> Dict[str, float]:
+        raise NotImplementedError()  # DELETE ME WHEN YOU'RE DONE
+        # NOTE: rowids start at 1, not 0
+        spot_rowid = self.spots.index(spot) + 1  # nasty, but w/e
+        time_rowid = self.times.index(time) + 1
+        # TODO: query FROM fish_at(spot, time) so we get fish w/ 0 catches
+        query = f"""
+            SELECT F.name, COUNT(*)
+            FROM Catch as C
+            INNER JOIN Fish AS F ON C.fish == F.rowid
+            WHERE C.spot == {spot_rowid}
+            AND   C.time == {time_rowid}
+            GROUP BY F.name;"""
+        fish_counts = self.db.execute(query).fetchall()
+        total_catches = sum(num_catches for fish, num_catches in fish_counts)
+        return {
+            fish: num_catches / total_catches
+            for fish, num_catches in fish_counts}
+        # f"{rate * 100:.2f}%"
+
+    # database update
     def log_catch(self, spot, time, fish, stars, shiny: bool):
         shiny = 1 if shiny == "on" else 0
         self.db.execute("""
@@ -108,30 +141,31 @@ class Server:
             (fish, stars, shiny, spot, time))
         catches = self.db.execute("""SELECT * FROM Catch""").fetchall()
         assert len(catches) > 0, "ROW ROW FIGHT THE POWER"
+        # update (rebuild) catch.history.sql
+        # NOTE: appending to a .csv would be faster
+        # -- keeping the whole database in human-readable .sql files is nice tho
         with open("catch.history.sql", "w") as catch_sql:
             catch_sql.write("".join([
                 "INSERT INTO Catch VALUES\n",
-                ",\n".join([
-                    " " * 4 + str(catch)
-                    for catch in catches]),
+                ",\n".join([f"    {catch}" for catch in catches]),
                 ";"]))
         print("* logged catch")
 
     def generate_form(self, route: str) -> str:
         spot, time = spot_and_time_of(route)
-        fishes = self.fish_at(spot, time)
+        # generate html snippets from database queries
+        catch_history = ("\n" + " " * 8).join([
+            "</td><td>".join([f"<tr><td>{fish}", str(stars), f"{'NY'[shiny]}</td></tr>"])
+            for fish, stars, shiny in self.catches_at(spot, time)])
         fish_picker = ("\n" + " " * 8).join([
             f'<option value="{fish_rowid}">{fish}</option>'
-            for fish_rowid, fish in fishes])
-        replacements = {
-            "fish-picker": fish_picker}
+            for fish_rowid, fish in self.fish_at(spot, time)])
         # TODO: css-palette (css vars picked based on time)
-        # TODO: catch-history (last 5 catches in this time & spot)
         # TODO: player icon location on .svg map of fishing spots
-        # TODO: (spot/time/) catch rate table
-        # base rate = 1 / len(pool)
-        # catch rate = catches.count(fish, time, spot) / catches.count(*, time, spot)
-        # observed rate = (base rate + catch rate) / 2
+        replacements = {
+            "catch-history": catch_history,
+            "fish-picker": fish_picker}
+        # replace placeholders with generated html snippets
         form = self.form_html
         for keyword, data in replacements.items():
             placeholder = "{{" + keyword + "}}"

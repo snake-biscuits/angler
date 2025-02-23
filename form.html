@@ -15,6 +15,7 @@
           display.textContent = event.target.value;
         });
       }
+      // TODO: lock stars=1&shiny=off if fish >= 18 (junk)
     </script>
   </head>
   <body onload="sliderDisplay()">
@@ -36,7 +37,19 @@
       <input type="submit" value="Add" />
     </form>
     <table>
-      {{catch-history}}
+      <caption>
+        Catch History
+      </caption>
+      <thead>
+        <tr>
+          <th scope="col">Fish</th>
+          <th scope="col">Stars</th>
+          <th scope="col">Shiny</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{catch-history}}
+      </tbody>
     </table>
   </body>
 </html>

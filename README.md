@@ -55,3 +55,18 @@ INNER JOIN FishTime AS FT ON FT.fish == F.rowid
 INNER JOIN Time AS T ON FT.time == T.rowid
 WHERE S.name == 'Deepwater' AND T.name == 'Morning';
 ```
+
+### Catch Rates
+> TODO: rates relative to each spot
+> -- needs the catch count to be a second query
+```sql
+-- catch count
+SELECT COUNT(*) FROM Catch;
+
+-- catch percentage
+SELECT F.name, ROUND(COUNT(*) * 1.0 / 101, 2)  -- 101 is the total catch count
+FROM Catch AS C
+INNER JOIN Fish AS F ON C.fish == F.rowid
+-- WHERE C.spot == ... AND C.time == ...  -- filter
+GROUP BY F.name;
+```

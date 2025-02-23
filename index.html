@@ -10,19 +10,19 @@
     <!-- TODO: Time of Day Picker (change .svg css class?) -->
     <!-- TODO: .svg Map of Fishing Spots w/ click script -->
     <form id="spot-picker" action="" method="post">
-      <label for="time">Time of Day:</label>
-      <select id="time" name="time">
-        <option value="1">Morning</option>
-        <option value="2">Afternoon</option>
-        <option value="3">Evening</option>
-        <option value="4">Late Night</option>
-      </select>
       <label for="spot">Fishing Spot:</label>
       <select id="spot" name="spot">
         <option value="1">Coastal</option>
         <option value="2">Bridge</option>
         <option value="3">Deepwater</option>
         <option value="4">Reef</option>
+      </select>
+      <label for="time">Time of Day:</label>
+      <select id="time" name="time">
+        <option value="1">Morning</option>
+        <option value="2">Afternoon</option>
+        <option value="3">Evening</option>
+        <option value="4">Late Night</option>
       </select>
       <input type="submit" value="Fish!" />
       <!-- NOTE: the server will reroute to a spot once this form is submitted -->
