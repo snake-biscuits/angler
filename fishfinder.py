@@ -172,7 +172,7 @@ class Server:
                 self.serve_200("text/html", self.generate_form(route))
                 print(f"> served dynamic route '{route}'")
             elif route.endswith("/style.css"):
-                # TODO: self.dynamic_css(route)
+                # TODO: self.generate_css(route)
                 self.serve_200(*self.static["/style.css"])
         else:
             self.serve_404(route)
@@ -202,7 +202,6 @@ class Server:
             raise RuntimeError(f"have no response to POST {route} {body}")
 
     # HTTP responses
-    # TODO: refactor serve_CODE to use this function internally
     def serve(self, message: List[str]):
         self.client_socket.send("\r\n".join(message).encode())
 
