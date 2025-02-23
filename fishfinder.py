@@ -194,6 +194,7 @@ class Server:
             spot, time = spot_and_time_of(route)
             spot = self.spots.index(spot) + 1
             time = self.times.index(time) + 1
+            form_dict["shiny"] = form_dict.get("shiny", "off")
             self.log_catch(spot, time, **form_dict)
             self.serve_200("text/html", self.generate_form(route))
             print(f"> reloaded dynamic route '{route}'")
@@ -264,8 +265,9 @@ class Server:
                     self.reply()
                 except NotImplementedError:
                     self.serve_501()
-                except Exception:
+                except Exception as exc:
                     self.serve_500()
+                    raise exc
                 self.client_socket.close()
                 print("v connection closed")
 
