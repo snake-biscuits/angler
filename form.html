@@ -19,14 +19,10 @@
   </head>
   <body onload="sliderDisplay()">
     <a href="/">&lt; Back To Hub</a>
-    <table>
-    <!-- TODO: return to spot picker -->
+    <!-- TODO: Shutdown Server button ("/shutdown" route) -->
     <!-- TODO: Time & Spot display -->
     <!-- time of day icon? -->
     <!-- fishing spot .svg w/ {{x & y}} -->
-    <!-- last 5 catches -->
-    {{catch-history}}
-    </table>
     <form action="" method="post">
       <!-- populate fish list from sql lookup -->
       <select id="fish" name="fish">
@@ -39,5 +35,8 @@
       <label for="shiny">Shiny</label>
       <input type="submit" value="Add" />
     </form>
+    <table>
+      {{catch-history}}
+    </table>
   </body>
 </html>
