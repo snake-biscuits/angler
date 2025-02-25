@@ -62,7 +62,7 @@ INSERT INTO Fish(name, shiny) VALUES
     ('Blackfin Shark', 'Zebra Shark'),
     ('Little Flying Octopus', 'Pink-Fringed Octopus'),
     ('Bluefin Tuna', 'Deep-Sea Gem'),
-    ('Lionfish', NULL),
+    ('Lionfish', 'Dance of Fire'),
     ('Sailfish', 'Green-Winged Warship'),
     ('Manta Ray', 'Sea Monster Carpet');
 
