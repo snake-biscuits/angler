@@ -7,6 +7,9 @@
     <!-- TODO: stylesheet -->
     <!-- {{substitute}} palette "variables" -->
     <script type="text/javascript">
+      // TODO: lock stars=1&shiny=off if fish >= 18 (junk)
+      // TODO: catch rate coloured rate tiers
+      // TODO: catch history decorate shinies
       function sliderDisplay() {  // show star slider number
         const slider  = document.querySelector("#stars");
         const display = document.querySelector("#count");
@@ -15,41 +18,67 @@
           display.textContent = event.target.value;
         });
       }
-      // TODO: lock stars=1&shiny=off if fish >= 18 (junk)
     </script>
   </head>
   <body onload="sliderDisplay()">
-    <a href="/">&lt; Back To Hub</a>
-    <!-- TODO: Shutdown Server button ("/shutdown" route) -->
-    <!-- TODO: Time & Spot display -->
-    <!-- time of day icon? -->
-    <!-- fishing spot .svg w/ {{x & y}} -->
-    <form action="" method="post">
-      <!-- populate fish list from sql lookup -->
-      <select id="fish" name="fish">
-        {{fish-picker}}
-      </select>
-      <input id="stars" name="stars" type="range" min="1" max="3" />
-      <output id="count"></output>
-      <label for="stars">Stars</label>
-      <input id="shiny" name="shiny" type="checkbox" />
-      <label for="shiny">Shiny</label>
-      <input type="submit" value="Add" />
-    </form>
-    <table>
-      <caption>
-        Catch History
-      </caption>
-      <thead>
-        <tr>
-          <th scope="col">Fish</th>
-          <th scope="col">Stars</th>
-          <th scope="col">Shiny</th>
-        </tr>
-      </thead>
-      <tbody>
-        {{catch-history}}
-      </tbody>
-    </table>
+    <div class="nav">
+      <div class="back">
+        <a href="/">HOME</a>
+      </div>
+      <div class="here">
+        <!-- TODO: time of day svg icon -->
+        <h1>{{spot}} ({{time}})</h1>
+      </div>
+      <div class="shutdown">
+        <!-- TODO: implement "/shutdown" route -->
+        <a href="/shutdown" disabled>OFF</a>
+      </div>
+    </div>
+    <!-- fishing spot .svg w/ player sprite / icon -->
+    <div class="bucket">
+      <form action="" method="post">
+        <select id="fish" name="fish">
+          <!-- fish list comes from sql db -->
+          {{fish-picker}}
+        </select>
+        <input id="stars" name="stars" type="range" min="1" max="3" />
+        <output id="count"></output>
+        <label for="stars">Stars</label>
+        <input id="shiny" name="shiny" type="checkbox" />
+        <label for="shiny">Shiny</label>
+        <input type="submit" value="Add!" />
+      </form>
+    </div>
+    <div class="catch-stats">
+      <div class="catch-history">
+        <table>
+          <caption>Catch History</caption>
+          <thead>
+            <tr>
+              <th scope="col">Fish</th>
+              <th scope="col">Stars</th>
+              <th scope="col">Shiny</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{catch-history}}
+          </tbody>
+        </table>
+      </div>
+      <div class="catch-rates">
+        <table>
+          <caption>Catch Rates</caption>
+          <thead>
+            <tr>
+              <th scope="col">Fish</th>
+              <th scope="col">Rate</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{catch-rates}}
+          </tbody>
+        </table>
+      </div>
+    </div>
   </body>
 </html>

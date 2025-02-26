@@ -112,25 +112,25 @@ class Server:
             AND   FT.time == {time_rowid};"""
         return self.db.execute(query).fetchall()
 
-    def rates_at(self, spot: str, time: str) -> Dict[str, float]:
-        raise NotImplementedError()  # DELETE ME WHEN YOU'RE DONE
+    def rates_at(self, spot: str, time: str) -> List[Tuple[str, float]]:
         # NOTE: rowids start at 1, not 0
         spot_rowid = self.spots.index(spot) + 1  # nasty, but w/e
         time_rowid = self.times.index(time) + 1
-        # TODO: query FROM fish_at(spot, time) so we get fish w/ 0 catches
+        # TODO: include 0% catch rate fish
+        # -- will likely need the fish_at(spot, time) query
         query = f"""
             SELECT F.name, COUNT(*)
             FROM Catch as C
             INNER JOIN Fish AS F ON C.fish == F.rowid
             WHERE C.spot == {spot_rowid}
             AND   C.time == {time_rowid}
-            GROUP BY F.name;"""
+            GROUP BY F.name
+            ORDER BY F.rowid;"""
         fish_counts = self.db.execute(query).fetchall()
         total_catches = sum(num_catches for fish, num_catches in fish_counts)
-        return {
-            fish: num_catches / total_catches
-            for fish, num_catches in fish_counts}
-        # f"{rate * 100:.2f}%"
+        return [
+            (fish, num_catches / total_catches)
+            for fish, num_catches in fish_counts]
 
     # database update
     def log_catch(self, spot, time, fish, stars, shiny: bool):
@@ -160,11 +160,18 @@ class Server:
         fish_picker = ("\n" + " " * 8).join([
             f'<option value="{fish_rowid}">{fish}</option>'
             for fish_rowid, fish in self.fish_at(spot, time)])
+        catch_rates = ("\n" + " " * 8).join([
+            f"<tr><td>{fish}</td><td>{rate * 100:.2f}%</td></tr>"
+            for fish, rate in self.rates_at(spot, time)])
+        # f"{rate * 100:.2f}%"
         # TODO: css-palette (css vars picked based on time)
         # TODO: player icon location on .svg map of fishing spots
         replacements = {
             "catch-history": catch_history,
-            "fish-picker": fish_picker}
+            "catch-rates": catch_rates,
+            "fish-picker": fish_picker,
+            "spot": spot,
+            "time": time}
         # replace placeholders with generated html snippets
         form = self.form_html
         for keyword, data in replacements.items():
