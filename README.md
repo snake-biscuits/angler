@@ -13,7 +13,7 @@ Elpis Ultimate Angler Championship
  - [x] record catches
  - [ ] `.svg` map of the docks & island
  - [ ] track completion
- - [ ] reverse engineer drop rates from catch records
+ - [x] reverse engineer drop rates from catch records
  - [ ] track story catches (not really nessecary)
 
 
