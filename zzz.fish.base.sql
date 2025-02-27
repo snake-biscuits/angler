@@ -50,7 +50,7 @@ CREATE TABLE IF NOT EXISTS Catch (
 INSERT INTO Fish(name, shiny) VALUES
     ('Mackerel', 'Spiny-Finned Mackerel'),
     ('Flatfish', 'Yellow-Scaled Flatfish'),
-    ('Crescent Grunter', NULL),
+    ('Crescent Grunter', 'Crimson Lightning'),
     ('Striped Prawn', 'Tiger Prawn'),
     ('Roller Octopus', 'Coral Octopus'),
     ('Arrow Squid', 'Rocket Squid'),
