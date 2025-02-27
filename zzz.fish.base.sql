@@ -57,7 +57,7 @@ INSERT INTO Fish(name, shiny) VALUES
     ('Porcupinefish', 'Blown-Up Pufferfish'),
     ('Seahorse', 'Red-Brown Seahorse'),
     ('Lantern Fish', 'Infernal Lantern'),
-    ('Butterfly Fish', NULL),
+    ('Butterfly Fish', 'Tomato Butterfly Fish'),
     ('Humphead Fish', 'Rounded-Headed Immortal'),
     ('Blackfin Shark', 'Zebra Shark'),
     ('Little Flying Octopus', 'Pink-Fringed Octopus'),
