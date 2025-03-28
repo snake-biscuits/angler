@@ -46,7 +46,6 @@ CREATE TABLE IF NOT EXISTS Catch (
 );
 
 -- data
--- TODO: replace NULLs once shinies have been caught
 INSERT INTO Fish(name, shiny) VALUES
     ('Mackerel', 'Spiny-Finned Mackerel'),
     ('Flatfish', 'Yellow-Scaled Flatfish'),
