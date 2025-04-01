@@ -5,6 +5,16 @@ Elpis Ultimate Angler Championship
 2025/02/14 10:00 - 2025/03/10 03:59
 ```
 
+## Usage
+
+ 1. Start the server in a terminal
+    * `$ python fishfinder.py`
+ 2. Connect to `localhost:8000` in your web browser
+ 3. Select fishing spot & time of day
+ 4. Log catches
+ 5. Check catch rates
+ 6. Try fishing in a different time and place for better rates
+
 
 ## Goals
  - [x] know when and where to fish
@@ -30,6 +40,8 @@ though this doesn't matter for completion afaik, just OCD
 ## Queries
 ```bash
 $ sqlite3
+```
+```sql
 > .read zzz.fish.base.sql
 > .read zzz.fish.junk.sql  -- optional
 > -- do your queries / track your catches
